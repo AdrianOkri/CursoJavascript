@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head><!--Cabeza del archivo--> <!--Configuración del archivo HTML-->
+        <meta charset="utf-8"> <!--Definir que tipo de carácters o letras serán utilizadas-->
+        <style> /*Estilos del HTML (Todo lo bonito)*/
+            body {
+                background-color: #ffffff; /*Color de fondo*/
+                margin: 0; /* Margen del contenido con el borde de la página es de cero*/
+                overflow: hidden; /* Controlar la forma del contendio que sale de la pantalla, para no parecer barras */
+            }
+        </style>
+    </head>
+    <body> <!--Cuerpo del archivo--> <!--Es la propia página web-->
+        <script src="three.min.js"></script> <!--Importar un archivo JS-->
+        <script>
+            // ********************* Variables *********************
+            // Las variables contienen información, pueden ser números también texto o booleans
+            var camera; // Guardar el valor de la camara
+            var scene;  // Donde sucederá toda la acción 3D
+            var renderer; // Objeto que va a dibujar el 3D
+            var geometry; // Dará forma a figura
+            var material; // Cubrir a la figura
+            var mesh; // La combinación de la geometry con el material
+
+            init(); // Llamar a las functions para hacer lo que están dentro de ellas
+            animate();
+            // ********************* Funciones *********************
+            function init() { // Iniciará todo el framework para comenzar a funcionar
+                // Utilizar un objeto de Three, y acceder al atributo de la perspectiva de la camara
+                // donde le vamos a dar un valor (Ángulo desde el que se verá la scene,, radio o aspecto de la camará, distancia mínima, distancia max)
+                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000); // innerWidth == Anchura interna | innerHeight == Altura interna
+                camera.position.set(0,0,500); // Configurar la posción de la camera, dentro de la ventana 3D
+                scene = new THREE.Scene(); // Iniciar la scene 3D
+                scene.add(camera); // Añadir el objeto de la camera
+
+                geometry = new THREE.IcosahedronGeometry(200, 3);
+                material = new THREE.MeshNormalMaterial();
+
+                mesh =  new THREE.Mesh(geometry, material);
+                scene.add(mesh);
+
+                renderer = new THREE.WebGLRenderer();
+                renderer.setClearColor("skyblue", 1);
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement); 
+            }
+
+            function animate() { // Animará la acción
+                requestAnimationFrame(animate);
+                mesh.rotation.x = Date.now() * 0.00005;
+                mesh.rotation.y = Date.now() * 0.0001;
+                renderer.render(scene, camera);
+            }
+        </script>
+    </body>
+</html>
